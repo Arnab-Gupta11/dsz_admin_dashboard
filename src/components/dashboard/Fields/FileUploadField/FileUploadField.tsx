@@ -98,6 +98,7 @@ const FileUploadField: React.FC<FileUploadFieldProps> = ({
         typeof res?.data === 'string'
           ? res.data
           : res?.data?.url ||
+            res?.data?.secureUrl ||
             res?.data?.data?.url ||
             res?.data?.fileUrl ||
             res?.data?.data?.fileUrl ||

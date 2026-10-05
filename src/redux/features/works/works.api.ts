@@ -5,18 +5,18 @@ export const worksApi = apiClient.injectEndpoints({
   endpoints: (builder) => ({
     getWorks: builder.query<{ data: IWork[]; meta?: any }, Record<string, any> | void>({
       query: (params) => ({
-        url: "/works",
+        url: "/admin/works",
         params: params || {},
       }),
       providesTags: ["Work"],
     }),
     getWorkById: builder.query<{ data: IWork }, string>({
-      query: (id) => `/works/${id}`,
+      query: (id) => `/admin/works/${id}`,
       providesTags: (result, error, id) => [{ type: "Work", id }],
     }),
     createWork: builder.mutation<{ data: IWork }, Partial<IWork>>({
       query: (data) => ({
-        url: "/works",
+        url: "/admin/works",
         method: "POST",
         body: data,
       }),
@@ -24,7 +24,7 @@ export const worksApi = apiClient.injectEndpoints({
     }),
     updateWork: builder.mutation<{ data: IWork }, { id: string; data: Partial<IWork> }>({
       query: ({ id, data }) => ({
-        url: `/works/${id}`,
+        url: `/admin/works/${id}`,
         method: "PATCH",
         body: data,
       }),
@@ -35,7 +35,7 @@ export const worksApi = apiClient.injectEndpoints({
     }),
     deleteWork: builder.mutation<{ data: IWork }, string>({
       query: (id) => ({
-        url: `/works/${id}`,
+        url: `/admin/works/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["Work"],

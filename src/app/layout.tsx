@@ -1,4 +1,5 @@
 import Providers from '@/providers/Providers';
+import { Toaster } from 'sonner';
 import type { Metadata } from 'next';
 import { Space_Grotesk } from 'next/font/google';
 import './globals.css';
@@ -25,6 +26,7 @@ export default function RootLayout({
         className={`${spaceGrotesk.variable} bg-background text-primary-text max-w-screen overflow-x-hidden font-sans antialiased`}
       >
         <Providers>{children}</Providers>
+        <Toaster position="top-right" richColors />
       </body>
     </html>
   );

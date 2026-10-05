@@ -19,10 +19,13 @@ export default function Edit() {
       </div>
       <ServiceForm initialData={data?.data} onSubmit={async (formData: any) => {
         try {
-          await update({ id: id as string, data: formData }).unwrap();
-          toast.success('Updated successfully');
+          const res: any = await update({ id: id as string, data: formData }).unwrap();
+          toast.success(res?.message || 'Service updated successfully!');
           router.push('/dashboard/services');
-        } catch(e) { toast.error('Failed to update'); }
+        } catch(e: any) { 
+          const errorMsg = e?.data?.message || e?.message || 'Failed to update service';
+          toast.error(errorMsg); 
+        }
       }} isLoading={isLoading} />
     </div>
   );

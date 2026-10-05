@@ -5,18 +5,18 @@ export const articlesApi = apiClient.injectEndpoints({
   endpoints: (builder) => ({
     getArticles: builder.query<{ data: IArticle[]; meta?: any }, Record<string, any> | void>({
       query: (params) => ({
-        url: "/articles",
+        url: "/admin/articles",
         params: params || {},
       }),
       providesTags: ["Article"],
     }),
     getArticleById: builder.query<{ data: IArticle }, string>({
-      query: (id) => `/articles/${id}`,
+      query: (id) => `/admin/articles/${id}`,
       providesTags: (result, error, id) => [{ type: "Article", id }],
     }),
     createArticle: builder.mutation<{ data: IArticle }, Partial<IArticle>>({
       query: (data) => ({
-        url: "/articles",
+        url: "/admin/articles",
         method: "POST",
         body: data,
       }),
@@ -24,7 +24,7 @@ export const articlesApi = apiClient.injectEndpoints({
     }),
     updateArticle: builder.mutation<{ data: IArticle }, { id: string; data: Partial<IArticle> }>({
       query: ({ id, data }) => ({
-        url: `/articles/${id}`,
+        url: `/admin/articles/${id}`,
         method: "PATCH",
         body: data,
       }),
@@ -35,7 +35,7 @@ export const articlesApi = apiClient.injectEndpoints({
     }),
     deleteArticle: builder.mutation<{ data: IArticle }, string>({
       query: (id) => ({
-        url: `/articles/${id}`,
+        url: `/admin/articles/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["Article"],

@@ -84,7 +84,7 @@ export default function Page() {
           <>
             <CustomTable columns={columns} data={items} />
             <div className="border-border border-t p-4">
-              <CustomPagination meta={meta!} />
+              <CustomPagination meta={meta || { total: items.length, limit, totalPages: 1 }} />
             </div>
           </>
         )}

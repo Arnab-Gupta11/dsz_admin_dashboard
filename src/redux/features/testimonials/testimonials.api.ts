@@ -5,18 +5,18 @@ export const testimonialsApi = apiClient.injectEndpoints({
   endpoints: (builder) => ({
     getTestimonials: builder.query<{ data: ITestimonial[]; meta?: any }, Record<string, any> | void>({
       query: (params) => ({
-        url: "/testimonials",
+        url: "/admin/testimonials",
         params: params || {},
       }),
       providesTags: ["Testimonial"],
     }),
     getTestimonialById: builder.query<{ data: ITestimonial }, string>({
-      query: (id) => `/testimonials/${id}`,
+      query: (id) => `/admin/testimonials/${id}`,
       providesTags: (result, error, id) => [{ type: "Testimonial", id }],
     }),
     createTestimonial: builder.mutation<{ data: ITestimonial }, Partial<ITestimonial>>({
       query: (data) => ({
-        url: "/testimonials",
+        url: "/admin/testimonials",
         method: "POST",
         body: data,
       }),
@@ -24,7 +24,7 @@ export const testimonialsApi = apiClient.injectEndpoints({
     }),
     updateTestimonial: builder.mutation<{ data: ITestimonial }, { id: string; data: Partial<ITestimonial> }>({
       query: ({ id, data }) => ({
-        url: `/testimonials/${id}`,
+        url: `/admin/testimonials/${id}`,
         method: "PATCH",
         body: data,
       }),
@@ -35,7 +35,7 @@ export const testimonialsApi = apiClient.injectEndpoints({
     }),
     deleteTestimonial: builder.mutation<{ data: ITestimonial }, string>({
       query: (id) => ({
-        url: `/testimonials/${id}`,
+        url: `/admin/testimonials/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["Testimonial"],

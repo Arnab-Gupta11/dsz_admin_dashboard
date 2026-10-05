@@ -5,18 +5,18 @@ export const mediaApi = apiClient.injectEndpoints({
   endpoints: (builder) => ({
     getMedias: builder.query<{ data: IMedia[]; meta?: any }, Record<string, any> | void>({
       query: (params) => ({
-        url: "/media",
+        url: "/admin/media",
         params: params || {},
       }),
       providesTags: ["Media"],
     }),
     getMediaById: builder.query<{ data: IMedia }, string>({
-      query: (id) => `/media/${id}`,
+      query: (id) => `/admin/media/${id}`,
       providesTags: (result, error, id) => [{ type: "Media", id }],
     }),
     createMedia: builder.mutation<{ data: IMedia }, Partial<IMedia>>({
       query: (data) => ({
-        url: "/media",
+        url: "/admin/media",
         method: "POST",
         body: data,
       }),
@@ -24,7 +24,7 @@ export const mediaApi = apiClient.injectEndpoints({
     }),
     updateMedia: builder.mutation<{ data: IMedia }, { id: string; data: Partial<IMedia> }>({
       query: ({ id, data }) => ({
-        url: `/media/${id}`,
+        url: `/admin/media/${id}`,
         method: "PATCH",
         body: data,
       }),
@@ -35,7 +35,7 @@ export const mediaApi = apiClient.injectEndpoints({
     }),
     deleteMedia: builder.mutation<{ data: IMedia }, string>({
       query: (id) => ({
-        url: `/media/${id}`,
+        url: `/admin/media/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["Media"],

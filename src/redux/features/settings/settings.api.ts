@@ -9,7 +9,7 @@ export const settingsApi = apiClient.injectEndpoints({
     }),
     updateSettings: builder.mutation<{ data: ISettings }, Partial<ISettings>>({
       query: (data) => ({
-        url: "/settings",
+        url: "/admin/settings",
         method: "PATCH",
         body: data,
       }),

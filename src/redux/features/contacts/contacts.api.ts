@@ -5,18 +5,18 @@ export const contactsApi = apiClient.injectEndpoints({
   endpoints: (builder) => ({
     getContacts: builder.query<{ data: IContact[]; meta?: any }, Record<string, any> | void>({
       query: (params) => ({
-        url: "/contacts",
+        url: "/admin/contacts",
         params: params || {},
       }),
       providesTags: ["Contact"],
     }),
     getContactById: builder.query<{ data: IContact }, string>({
-      query: (id) => `/contacts/${id}`,
+      query: (id) => `/admin/contacts/${id}`,
       providesTags: (result, error, id) => [{ type: "Contact", id }],
     }),
     createContact: builder.mutation<{ data: IContact }, Partial<IContact>>({
       query: (data) => ({
-        url: "/contacts",
+        url: "/admin/contacts",
         method: "POST",
         body: data,
       }),
@@ -24,7 +24,7 @@ export const contactsApi = apiClient.injectEndpoints({
     }),
     updateContact: builder.mutation<{ data: IContact }, { id: string; data: Partial<IContact> }>({
       query: ({ id, data }) => ({
-        url: `/contacts/${id}`,
+        url: `/admin/contacts/${id}`,
         method: "PATCH",
         body: data,
       }),
@@ -35,7 +35,7 @@ export const contactsApi = apiClient.injectEndpoints({
     }),
     deleteContact: builder.mutation<{ data: IContact }, string>({
       query: (id) => ({
-        url: `/contacts/${id}`,
+        url: `/admin/contacts/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["Contact"],

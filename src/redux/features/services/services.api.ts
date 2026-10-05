@@ -5,18 +5,18 @@ export const servicesApi = apiClient.injectEndpoints({
   endpoints: (builder) => ({
     getServices: builder.query<{ data: IService[]; meta?: any }, Record<string, any> | void>({
       query: (params) => ({
-        url: "/services",
+        url: "/admin/services",
         params: params || {},
       }),
       providesTags: ["Service"],
     }),
     getServiceById: builder.query<{ data: IService }, string>({
-      query: (id) => `/services/${id}`,
+      query: (id) => `/admin/services/${id}`,
       providesTags: (result, error, id) => [{ type: "Service", id }],
     }),
     createService: builder.mutation<{ data: IService }, Partial<IService>>({
       query: (data) => ({
-        url: "/services",
+        url: "/admin/services",
         method: "POST",
         body: data,
       }),
@@ -24,7 +24,7 @@ export const servicesApi = apiClient.injectEndpoints({
     }),
     updateService: builder.mutation<{ data: IService }, { id: string; data: Partial<IService> }>({
       query: ({ id, data }) => ({
-        url: `/services/${id}`,
+        url: `/admin/services/${id}`,
         method: "PATCH",
         body: data,
       }),
@@ -35,7 +35,7 @@ export const servicesApi = apiClient.injectEndpoints({
     }),
     deleteService: builder.mutation<{ data: IService }, string>({
       query: (id) => ({
-        url: `/services/${id}`,
+        url: `/admin/services/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["Service"],
