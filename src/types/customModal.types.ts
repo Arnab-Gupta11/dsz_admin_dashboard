@@ -1,0 +1,43 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+//Modal views type
+export type TModalView =
+  | 'DELETE_CONFIRM'
+  | 'WRITE_REVIEW'
+  | 'SUSPEND_CONFIRM'
+  | 'ADD_ADMIN'
+  | 'EDIT_ADMIN'
+  | 'STATUS_CHANGE_CONFIRM'
+  | 'VIEW_EBOOK'
+  | 'NONE';
+
+//Open Modal Props
+export interface IOpenModalProps {
+  view: TModalView;
+  data?: any;
+  title?: string;
+  description?: string;
+}
+
+//Modal state interface
+export interface IModalState {
+  isOpen: boolean;
+  view: TModalView;
+  data: any;
+  title: string;
+  description: string;
+}
+
+//Action types
+export type TModalAction =
+  | {
+      type: 'OPEN_MODAL';
+      payload: IOpenModalProps;
+    }
+  | { type: 'CLOSE_MODAL' };
+
+export interface IModalContextType extends IModalState {
+  openModal: (props: IOpenModalProps) => void;
+  closeModal: () => void;
+}

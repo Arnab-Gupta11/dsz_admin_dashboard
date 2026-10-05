@@ -1,0 +1,61 @@
+--- src/app/(main)/insights/[slug]/page.tsx
++++ src/app/(main)/insights/[slug]/page.tsx
+@@ -35,39 +35,46 @@
+ 
+   return (
+     <>
+-      <article className="bg-paper pb-24 pt-32 text-ink lg:pb-32 lg:pt-44">
++      {/* Hero section matching theme */}
++      <div className="bg-navy pb-24 pt-32 lg:pb-32 lg:pt-44">
+         <Container>
+           <div className="mx-auto max-w-3xl">
+             <Link href="/insights"
+-              className="group inline-flex min-h-[44px] items-center gap-2 text-sm text-ink-2 transition-colors duration-200 hover:text-ink">
++              className="group inline-flex min-h-[44px] items-center gap-2 text-sm text-fg-2 transition-colors duration-200 hover:text-white">
+               
+               <ArrowLeftIcon aria-hidden className="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-1" />
+               All insights
+             </Link>
+             <motion.div
+               initial={{ opacity: 0, y: 16 }}
+               animate={{ opacity: 1, y: 0 }}
+               transition={{ duration: 0.6, ease: easeOut }}>
+               
+               <p className="mt-8 flex flex-wrap items-center gap-3 text-sm">
+-                <span className="font-medium text-ink-teal">{article.category}</span>
+-                <span aria-hidden className="h-1 w-1 rounded-full bg-ink/30" />
+-                <time dateTime={article.date} className="text-ink-2">
++                <span className="font-medium text-cyan">{article.category}</span>
++                <span aria-hidden className="h-1 w-1 rounded-full bg-white/30" />
++                <time dateTime={article.date} className="text-fg-2">
+                   {formatDate(article.date)}
+                 </time>
+-                <span aria-hidden className="h-1 w-1 rounded-full bg-ink/30" />
+-                <span className="text-ink-2">{article.readTime}</span>
++                <span aria-hidden className="h-1 w-1 rounded-full bg-white/30" />
++                <span className="text-fg-2">{article.readTime}</span>
+               </p>
+-              <h1 className="mt-5 font-display text-[clamp(2.25rem,5.5vw,4.25rem)] font-bold leading-[1.02] tracking-[-0.04em]">
++              <h1 className="mt-5 font-display text-[clamp(2.25rem,5.5vw,4.25rem)] font-bold leading-[1.02] tracking-[-0.04em] text-white">
+                 {article.title}
+               </h1>
+-              <p className="mt-6 text-xl leading-relaxed text-ink-2">{article.excerpt}</p>
++              <p className="mt-6 text-xl leading-relaxed text-fg-2">{article.excerpt}</p>
+             </motion.div>
+           </div>
+-
++        </Container>
++      </div>
++
++      {/* Content section */}
++      <article className="bg-paper pb-24 text-ink lg:pb-32">
++        <Container>
+           <motion.div
+             initial={{ clipPath: 'inset(8% 4% 8% 4% round 28px)', opacity: 0 }}
+             animate={{ clipPath: 'inset(0% 0% 0% 0% round 28px)', opacity: 1 }}
+             transition={{ duration: 0.8, ease: easeOut, delay: 0.2 }}
+-            className="mx-auto mt-14 max-w-5xl overflow-hidden rounded-[28px]">
++            className="mx-auto -mt-14 max-w-5xl overflow-hidden rounded-[28px] relative z-10 shadow-2xl">
+             
+             <img src={article.image} alt={article.imageAlt} className="aspect-[16/9] w-full object-cover" />
+           </motion.div>
