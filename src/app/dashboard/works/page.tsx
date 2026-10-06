@@ -49,6 +49,12 @@ export default function WorksPage() {
       accessor: 'title' as keyof IWork,
     },
     {
+      header: 'Service',
+      cell: (row: IWork) => (
+        <span>{row.service?.title || 'No Service'}</span>
+      ),
+    },
+    {
       header: 'Client',
       accessor: 'client' as keyof IWork,
     },

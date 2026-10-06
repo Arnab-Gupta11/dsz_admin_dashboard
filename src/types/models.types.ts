@@ -182,12 +182,10 @@ export interface IWork {
   client: string;
   industry: string;
   services: string[];
-  categories: ('Branding' | 'Marketing' | 'Design' | 'Video' | 'Web/App' | 'Automation')[];
+  service: string | any;
   result: string;
   year: string;
-  image: string;
-  imageAlt: string;
-  imagePulicId: string;
+  heroImages: IProjectImage[];
   summary: string;
   challenge: string;
   strategy: string;
