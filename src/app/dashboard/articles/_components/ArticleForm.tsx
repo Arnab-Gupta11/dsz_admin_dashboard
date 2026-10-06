@@ -4,10 +4,11 @@ import InputField from '@/components/dashboard/Fields/InputField/InputField';
 import TextAreaField from '@/components/dashboard/Fields/TextAreaField/TextAreaField';
 import SelectField from '@/components/dashboard/Fields/SelectField/SelectField';
 import RichTextField from '@/components/dashboard/Fields/RichTextField/RichTextField';
+import FileUploadField from '@/components/dashboard/Fields/FileUploadField/FileUploadField';
 import DynamicActionButton from '@/components/dashboard/DynamicActionButton/DynamicActionButton';
 import DynamicBackButton from '@/components/dashboard/DynamicBackButton/DynamicBackButton';
 import { IArticle } from '@/types/models.types';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Save } from 'lucide-react';
@@ -16,9 +17,8 @@ const articleSchema = z.object({
   title: z.string().min(1, 'Title is required'),
   category: z.enum(['Marketing Tips', 'AI Tools', 'Case Studies', 'DSZ News']),
   excerpt: z.string().min(1, 'Excerpt is required'),
-  image: z.string().min(1, 'Image URL is required'),
+  image: z.string().min(1, 'Image is required'),
   imageAlt: z.string().min(1, 'Image Alt is required'),
-  imagePublicId: z.string().min(1, 'Public ID is required'),
   author: z.string().min(1, 'Author is required'),
   body: z.string().min(1, 'Content is required'), // we send HTML string, backend accepts Mixed
   readTime: z.string().min(1, 'Read time is required'),
@@ -42,7 +42,6 @@ export default function ArticleForm({ initialData, onSubmit, isLoading }: Props)
       excerpt: initialData?.excerpt || '',
       image: initialData?.image || '',
       imageAlt: initialData?.imageAlt || '',
-      imagePublicId: initialData?.imagePublicId || 'dummy-id',
       author: initialData?.author || 'DSZ Team',
       body: typeof initialData?.body === 'string' ? initialData.body : '', // Handle string
       readTime: initialData?.readTime || '5 min read',
@@ -111,9 +110,20 @@ export default function ArticleForm({ initialData, onSubmit, isLoading }: Props)
 
           <div className="border-border bg-card space-y-4 rounded-md border p-6 shadow-sm">
             <h2 className="text-primary-text mb-4 text-lg font-semibold">Media</h2>
-            <InputField label="Cover Image URL" name="image" control={control} error={errors.image?.message} required />
+            <Controller
+              name="image"
+              control={control}
+              render={({ field }) => (
+                <FileUploadField
+                  label="Cover Image"
+                  value={field.value}
+                  onChange={field.onChange}
+                  error={errors.image?.message}
+                  required
+                />
+              )}
+            />
             <InputField label="Image Alt Text" name="imageAlt" control={control} error={errors.imageAlt?.message} required />
-            <InputField label="Cloudinary Public ID" name="imagePublicId" control={control} error={errors.imagePublicId?.message} required />
           </div>
         </div>
       </div>

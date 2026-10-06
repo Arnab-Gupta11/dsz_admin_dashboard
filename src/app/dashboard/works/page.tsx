@@ -7,6 +7,7 @@ import DynamicBadge from '@/components/dashboard/DynamicBadge/DynamicBadge';
 import DynamicTableActions from '@/components/dashboard/DynamicTableActions/DynamicTableActions';
 import DynamicTableFilterBar from '@/components/dashboard/DynamicTableFilterBar/DynamicTableFilterBar';
 import EmptyState from '@/components/dashboard/EmptyState/EmptyState';
+import TableSkeleton from '@/components/Loader/Skeletons/TableSkeleton';
 import { useModal } from '@/context/ModalContext';
 import { useGetWorksQuery, useDeleteWorkMutation } from '@/redux/features/works/works.api';
 import { IWork } from '@/types/models.types';
@@ -88,7 +89,7 @@ export default function WorksPage() {
         <DynamicTableFilterBar fields={[{ name: 'search', type: 'search', placeholder: 'Search works...' }]} />
         
         {isLoading ? (
-          <div className="p-8 text-center text-sm text-secondary-text">Loading...</div>
+          <div className="p-4"><TableSkeleton rowCount={5} columnCount={5} /></div>
         ) : isError ? (
           <div className="p-8 text-center text-sm text-danger">Failed to load works</div>
         ) : works.length === 0 ? (

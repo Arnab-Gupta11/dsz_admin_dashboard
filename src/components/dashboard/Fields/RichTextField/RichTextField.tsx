@@ -3,7 +3,9 @@
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
-import Image from '@tiptap/extension-image';
+import ImageResize from 'tiptap-extension-resize-image';
+import Underline from '@tiptap/extension-underline';
+import TextAlign from '@tiptap/extension-text-align';
 import { Control, FieldValues, Path, useController } from 'react-hook-form';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
@@ -34,17 +36,24 @@ const RichTextField = <T extends FieldValues>({
 
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({
+        codeBlock: false,
+        code: false,
+      }),
+      Underline,
+      TextAlign.configure({
+        types: ['heading', 'paragraph'],
+      }),
       Link.configure({
         openOnClick: false,
       }),
-      Image,
+      ImageResize,
     ],
     content: value || '',
     editorProps: {
       attributes: {
         class:
-          'min-h-[250px] w-full resize-none rounded-b-md p-4 text-sm focus-visible:outline-none focus-visible:ring-0 text-primary dark:text-primary-text',
+          'min-h-[250px] w-full resize-none rounded-b-md p-4 focus-visible:outline-none focus-visible:ring-0 text-primary-text',
       },
     },
     onUpdate: ({ editor }) => {
@@ -67,7 +76,7 @@ const RichTextField = <T extends FieldValues>({
       
       <div
         className={cn(
-          'border-border overflow-hidden rounded-md border shadow-none transition-all',
+          'border-border rounded-md border shadow-none transition-all relative',
           'focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20',
           {
             'border-danger/50 focus-within:border-danger focus-within:ring-danger/10': error,

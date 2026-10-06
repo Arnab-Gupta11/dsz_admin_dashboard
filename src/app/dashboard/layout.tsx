@@ -11,7 +11,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
       <AppSidebar />
       <SidebarInset>
         <NavigationBar />
-        <main className="bg-bg! text-primary-text! h-full w-full overflow-hidden p-4">
+        <main className="bg-bg! text-primary-text! h-full w-full p-4">
           {children}
         </main>
       </SidebarInset>

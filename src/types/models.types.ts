@@ -12,7 +12,7 @@ export interface IArticle {
   excerpt: string;
   image: string;
   imageAlt: string;
-  imagePublicId: string;
+  imagePublicId?: string;
   author: string;
   body: ArticleBlock[];
   readTime: string;

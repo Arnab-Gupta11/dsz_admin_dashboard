@@ -7,6 +7,7 @@ import DynamicBadge from '@/components/dashboard/DynamicBadge/DynamicBadge';
 import DynamicTableActions from '@/components/dashboard/DynamicTableActions/DynamicTableActions';
 import DynamicTableFilterBar from '@/components/dashboard/DynamicTableFilterBar/DynamicTableFilterBar';
 import EmptyState from '@/components/dashboard/EmptyState/EmptyState';
+import TableSkeleton from '@/components/Loader/Skeletons/TableSkeleton';
 import { useModal } from '@/context/ModalContext';
 import { useGetArticlesQuery, useDeleteArticleMutation } from '@/redux/features/articles/articles.api';
 import { IArticle } from '@/types/models.types';
@@ -86,7 +87,7 @@ export default function ArticlesPage() {
         <DynamicTableFilterBar fields={[{ name: 'search', type: 'search', placeholder: 'Search articles...' }]} />
         
         {isLoading ? (
-          <div className="p-8 text-center text-sm text-secondary-text">Loading...</div>
+          <div className="p-4"><TableSkeleton rowCount={5} columnCount={5} /></div>
         ) : isError ? (
           <div className="p-8 text-center text-sm text-danger">Failed to load articles</div>
         ) : articles.length === 0 ? (
