@@ -28,7 +28,7 @@ export default function StringArrayField<T extends FieldValues>({
     field: { onChange, value },
   } = useController({ name, control });
 
-  const items = Array.isArray(value) ? value : [];
+  const items: string[] = Array.isArray(value) ? value : [];
 
   const handleAdd = () => {
     onChange([...items, '']);

@@ -67,7 +67,6 @@ const DatePickerField = <T extends FieldValues>({
                 onChange('');
               }
             }}
-            initialFocus
           />
         </PopoverContent>
       </Popover>

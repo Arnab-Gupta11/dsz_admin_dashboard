@@ -12,13 +12,25 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useCurrentUserRole } from '@/hooks/useCurrentUserRole';
 import { AdminRoutes } from '../../sidebarRoutes';
+import { UserCog } from 'lucide-react';
+import React from 'react';
 
 function SidebarContentSection() {
   const pathname = usePathname();
   const { setOpenMobile, isMobile, state } = useSidebar();
   const { role } = useCurrentUserRole();
 
-  const menuItems = AdminRoutes || [];
+  const menuItems = React.useMemo(() => {
+    const routes = [...AdminRoutes];
+    if (role === 'SUPER_ADMIN') {
+      routes.push({
+        title: "Admin Management",
+        url: "/dashboard/admins",
+        icon: UserCog as any,
+      });
+    }
+    return routes;
+  }, [role]);
 
   return (
     <SidebarContent className={`no-scrollbar pt-4 ${state === 'expanded' ? 'px-3' : 'px-2'}`}>

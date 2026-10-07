@@ -80,7 +80,8 @@ export const apiClient = createApi({
     "Contact",
     "Testimonial",
     "Settings",
-    "Media"
+    "Media",
+    "AdminUser"
   ],
   endpoints: () => ({}),
 });

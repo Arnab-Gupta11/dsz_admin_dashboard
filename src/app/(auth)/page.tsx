@@ -47,6 +47,7 @@ export default function LoginPage() {
       };
 
       dispatch(setCredentials({ user }));
+      await import('@/services/auth/auth.service').then(m => m.setUserProfile(user));
       toast.success(res?.message || 'Logged in Successfully');
       router.push('/dashboard');
     } catch (error: any) {

@@ -1,31 +1,22 @@
 'use client';
 
-import { getCurrentUserRole } from '@/services/auth/auth.service';
+import { useAppSelector } from '@/redux/hooks';
 import { TUserRole } from '@/types/userRole.types';
 import { useEffect, useState } from 'react';
 
 export const useCurrentUserRole = () => {
+  const user = useAppSelector((state) => state.auth.user);
   const [role, setRole] = useState<TUserRole | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const loadRole = async () => {
-      try {
-        const data = await getCurrentUserRole();
-        if (data && data.role) {
-          setRole(data.role);
-        } else {
-          setRole(null);
-        }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadRole();
-  }, []);
+    if (user && user.role) {
+      setRole(user.role as TUserRole);
+    } else {
+      setRole(null);
+    }
+    setLoading(false);
+  }, [user]);
 
   return {
     role,
