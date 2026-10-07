@@ -1,5 +1,6 @@
 'use client';
 
+import FormSkeleton from "@/components/Loader/Skeletons/FormSkeleton";
 import InputField from '@/components/dashboard/Fields/InputField/InputField';
 import DynamicActionButton from '@/components/dashboard/DynamicActionButton/DynamicActionButton';
 import { useGetSettingsQuery, useUpdateSettingsMutation } from '@/redux/features/settings/settings.api';
@@ -41,7 +42,7 @@ export default function SettingsPage() {
     } catch(e: any) { toast.error(e?.data?.message || e?.message || 'Failed to update settings'); }
   };
 
-  if (isFetching) return <div className="p-8 text-center">Loading settings...</div>;
+  if (isFetching) return <FormSkeleton />;
 
   return (
     <div className="space-y-6">

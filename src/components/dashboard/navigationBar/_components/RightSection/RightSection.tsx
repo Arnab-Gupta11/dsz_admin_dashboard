@@ -1,14 +1,12 @@
-'use client';
+"use client";
 
-import { ThemeToggle } from '@/components/shared/ThemeToggle/mode-toggle';
-import NotificationDropdown from './NotificationDropdown/NotificationDropdown';
-import UserDropdown from './UserDropdown/UserDropdown';
+import UserDropdown from "./UserDropdown/UserDropdown";
 
 function RightSection() {
   return (
     <div className="flex items-center gap-3">
       {/* Theme Toggle */}
-      <ThemeToggle />
+      {/* <ThemeToggle /> */}
 
       {/* <Link
         href="/dashboard/account"
@@ -18,7 +16,7 @@ function RightSection() {
       </Link> */}
 
       {/* Notification Dropdown */}
-      <NotificationDropdown />
+      {/* <NotificationDropdown /> */}
 
       {/* User Dropdown */}
       <UserDropdown />

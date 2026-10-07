@@ -1,5 +1,6 @@
 'use client';
 
+import FormSkeleton from "@/components/Loader/Skeletons/FormSkeleton";
 import { useGetArticleByIdQuery, useUpdateArticleMutation } from '@/redux/features/articles/articles.api';
 import { IArticle } from '@/types/models.types';
 import { useParams, useRouter } from 'next/navigation';
@@ -26,7 +27,7 @@ export default function EditArticlePage() {
   };
 
   if (isFetching) {
-    return <div className="p-8 text-center text-sm text-secondary-text">Loading article details...</div>;
+    return <FormSkeleton />;
   }
 
   if (isError || !data?.data) {

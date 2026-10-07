@@ -1,5 +1,6 @@
 'use client';
 import { useGetJobByIdQuery, useUpdateJobMutation } from '@/redux/features/jobs/jobs.api';
+import FormSkeleton from "@/components/Loader/Skeletons/FormSkeleton";
 import { useParams, useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import JobForm from '../../_components/JobForm';
@@ -10,7 +11,7 @@ export default function Edit() {
   const { data, isLoading: isFetching } = useGetJobByIdQuery(id as string);
   const [update, { isLoading }] = useUpdateJobMutation();
 
-  if (isFetching) return <div>Loading...</div>;
+  if (isFetching) return <FormSkeleton />;
 
   return (
     <div className="space-y-6">

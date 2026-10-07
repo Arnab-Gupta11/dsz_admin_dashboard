@@ -1,4 +1,5 @@
 'use client';
+import FormSkeleton from "@/components/Loader/Skeletons/FormSkeleton";
 
 import { useGetWorkByIdQuery, useUpdateWorkMutation } from '@/redux/features/works/works.api';
 import { IWork } from '@/types/models.types';
@@ -26,7 +27,7 @@ export default function EditWorkPage() {
   };
 
   if (isFetching) {
-    return <div className="p-8 text-center text-sm text-secondary-text">Loading work details...</div>;
+    return <FormSkeleton />;
   }
 
   if (isError || !data?.data) {

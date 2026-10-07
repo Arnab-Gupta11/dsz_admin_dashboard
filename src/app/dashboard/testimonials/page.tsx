@@ -1,6 +1,7 @@
 'use client';
 
 import CustomPagination from '@/components/dashboard/CustomPagination/CustomPagination';
+import TableSkeleton from "@/components/Loader/Skeletons/TableSkeleton";
 import CustomTable from '@/components/dashboard/CustomTable/CustomTable';
 import DynamicActionButton from '@/components/dashboard/DynamicActionButton/DynamicActionButton';
 import DynamicBadge from '@/components/dashboard/DynamicBadge/DynamicBadge';
@@ -72,7 +73,7 @@ export default function Page() {
         <DynamicTableFilterBar fields={[{ name: 'search', type: 'search', placeholder: 'Search...' }]} />
         
         {isLoading ? (
-          <div className="p-8 text-center text-sm text-secondary-text">Loading...</div>
+          <div className="p-4"><TableSkeleton rowCount={5} columnCount={5} /></div>
         ) : isError ? (
           <div className="p-8 text-center text-sm text-danger">Failed to load data</div>
         ) : items.length === 0 ? (

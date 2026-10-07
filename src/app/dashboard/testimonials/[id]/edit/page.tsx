@@ -1,5 +1,6 @@
 'use client';
 import { useGetTestimonialByIdQuery, useUpdateTestimonialMutation } from '@/redux/features/testimonials/testimonials.api';
+import FormSkeleton from "@/components/Loader/Skeletons/FormSkeleton";
 import { useParams, useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import TestimonialForm from '../../_components/TestimonialForm';
@@ -10,7 +11,7 @@ export default function Edit() {
   const { data, isLoading: isFetching } = useGetTestimonialByIdQuery(id as string);
   const [update, { isLoading }] = useUpdateTestimonialMutation();
 
-  if (isFetching) return <div>Loading...</div>;
+  if (isFetching) return <FormSkeleton />;
 
   return (
     <div className="space-y-6">

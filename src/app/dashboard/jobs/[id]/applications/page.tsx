@@ -1,6 +1,7 @@
 "use client";
 
 import CustomPagination from "@/components/dashboard/CustomPagination/CustomPagination";
+import TableSkeleton from "@/components/Loader/Skeletons/TableSkeleton";
 import CustomTable from "@/components/dashboard/CustomTable/CustomTable";
 import DynamicBadge from "@/components/dashboard/DynamicBadge/DynamicBadge";
 import DynamicTableActions from "@/components/dashboard/DynamicTableActions/DynamicTableActions";
@@ -40,14 +41,17 @@ export default function Page() {
   const handleDelete = (id: string, name?: string) => {
     openModal({
       view: "DELETE_CONFIRM",
-      data: { deleteItem: name,
+      data: {
+        deleteItem: name,
         onConfirm: async () => {
           try {
             await deleteItem(id).unwrap();
             toast.success("Deleted successfully");
             closeModal();
           } catch (error: any) {
-            toast.error(error?.data?.message || error?.message || 'Failed to delete');
+            toast.error(
+              error?.data?.message || error?.message || "Failed to delete",
+            );
           }
         },
         isLoading: isDeleting,
@@ -83,8 +87,16 @@ export default function Page() {
       cell: (row: any) => (
         <DynamicTableActions
           actions={[
-            { type: "view", label: "Details", href: `/dashboard/job-applications/${row._id}` },
-            { type: "message", label: "Email", onClick: () => window.location.href = `mailto:${row.email}` },
+            {
+              type: "view",
+              label: "Details",
+              href: `/dashboard/job-applications/${row._id}`,
+            },
+            {
+              type: "message",
+              label: "Email",
+              onClick: () => (window.location.href = `mailto:${row.email}`),
+            },
             { type: "delete", onClick: () => handleDelete(row._id, row.name) },
           ]}
         />
@@ -98,9 +110,7 @@ export default function Page() {
         <div className="flex items-center gap-4">
           <DynamicBackButton href="/dashboard/jobs" />
           <div>
-            <h1 className="text-primary-text text-2xl font-bold">
-              Applicants
-            </h1>
+            <h1 className="text-primary-text text-2xl font-bold">Applicants</h1>
             <p className="text-secondary-text mt-1 text-sm">
               Review candidate CVs for this position
             </p>
@@ -112,7 +122,11 @@ export default function Page() {
         <div className="p-4 border-b border-border">
           <DynamicTableFilterBar
             fields={[
-              { name: "search", type: "search", placeholder: "Search by Name, Email, or Phone..." },
+              {
+                name: "search",
+                type: "search",
+                placeholder: "Search by Name, Email, or Phone...",
+              },
               {
                 name: "status",
                 type: "select",
@@ -130,8 +144,8 @@ export default function Page() {
         </div>
 
         {isLoading ? (
-          <div className="p-8 text-center text-sm text-secondary-text">
-            Loading...
+          <div className="p-4">
+            <TableSkeleton rowCount={5} columnCount={5} />
           </div>
         ) : isError ? (
           <div className="p-8 text-center text-sm text-danger">
@@ -144,7 +158,9 @@ export default function Page() {
           />
         ) : (
           <>
-            <CustomTable columns={columns} data={items} />
+            <div className="p-4">
+              <CustomTable columns={columns} data={items} />
+            </div>
             <div className="border-border border-t p-4">
               <CustomPagination
                 meta={meta || { total: items.length, limit, totalPages: 1 }}
