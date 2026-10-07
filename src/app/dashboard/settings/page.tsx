@@ -38,9 +38,7 @@ export default function SettingsPage() {
     try {
       await updateSettings(formData).unwrap();
       toast.success('Settings updated successfully');
-    } catch (e) {
-      toast.error('Failed to update settings');
-    }
+    } catch(e: any) { toast.error(e?.data?.message || e?.message || 'Failed to update settings'); }
   };
 
   if (isFetching) return <div className="p-8 text-center">Loading settings...</div>;

@@ -18,7 +18,7 @@ export default function Create() {
           await create(data).unwrap();
           toast.success('Created successfully');
           router.push('/dashboard/jobs');
-        } catch(e) { toast.error('Failed to create'); }
+        } catch(e: any) { toast.error(e?.data?.message || e?.message || 'Failed to create'); }
       }} isLoading={isLoading} />
     </div>
   );

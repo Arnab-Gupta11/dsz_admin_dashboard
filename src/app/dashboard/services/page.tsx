@@ -20,7 +20,7 @@ export default function Page() {
   const page = Number(searchParams.get('page')) || 1;
   const limit = Number(searchParams.get('limit')) || 10;
   const search = searchParams.get('search') || '';
-  const status = searchParams.get('status') || '';
+  const status = searchParams.get('status') || undefined;
 
   const { data, isLoading, isError } = useGetServicesQuery({ page, limit, search, status });
   const [deleteItem, { isLoading: isDeleting }] = useDeleteServiceMutation();
@@ -29,8 +29,8 @@ export default function Page() {
   const items = data?.data || [];
   const meta = data?.meta;
 
-  const handleDelete = (id: string) => {
-    openModal({ view: 'DELETE_CONFIRM', data: { 
+  const handleDelete = (id: string, title?: string) => {
+    openModal({ view: 'DELETE_CONFIRM', data: { deleteItem: title, 
       onConfirm: async () => {
         try {
           await deleteItem(id).unwrap();
@@ -55,7 +55,7 @@ export default function Page() {
     },
     {
       header: 'Actions',
-      cell: (row: any) => <DynamicTableActions actions={[{ type: 'edit', href: `/dashboard/services/${row._id}/edit` }, { type: 'delete', onClick: () => handleDelete(row._id) }]} />
+      cell: (row: any) => <DynamicTableActions actions={[{ type: 'edit', href: `/dashboard/services/${row._id}/edit` }, { type: 'delete', onClick: () => handleDelete(row._id, row.title) }]} />
     }
 
   ];
@@ -73,21 +73,23 @@ export default function Page() {
         </Link>
       </div>
 
-      <div className="border-border bg-card rounded-md border shadow-sm flex flex-col gap-4 py-4">
-        <DynamicTableFilterBar 
-          fields={[
-            { name: 'search', type: 'search', placeholder: 'Search services...' },
-            { name: 'status', type: 'select', placeholder: 'Status', options: [
-              { label: 'All Statuses', value: 'all' },
-              { label: 'Published', value: 'PUBLISHED' },
-              { label: 'Draft', value: 'DRAFT' },
-              { label: 'Archived', value: 'ARCHIVED' }
-            ]}
-          ]} 
-        />
+      <div className="border-border bg-card rounded-md border shadow-sm flex flex-col">
+        <div className="p-4 border-b border-border">
+          <DynamicTableFilterBar 
+            fields={[
+              { name: 'search', type: 'search', placeholder: 'Search by Title, Category, or Tagline...' },
+              { name: 'status', type: 'select', placeholder: 'Filter by Status', options: [
+                { label: 'All Statuses', value: 'all' },
+                { label: 'Published', value: 'PUBLISHED' },
+                { label: 'Draft', value: 'DRAFT' },
+                { label: 'Archived', value: 'ARCHIVED' }
+              ]}
+            ]} 
+          />
+        </div>
         
         {isLoading ? (
-          <div className="px-4 pb-4"><TableSkeleton /></div>
+          <div className="p-4"><TableSkeleton /></div>
         ) : isError ? (
           <div className="p-8 text-center text-sm text-danger">Failed to load data</div>
         ) : items.length === 0 ? (

@@ -59,7 +59,7 @@ const DynamicTableFilterBarContent = ({ fields }: DynamicTableFilterBarProps) =>
               value={searchInputValue}
               onChange={(e) => setSearchInputValue(e.target.value)}
               placeholder={searchField.placeholder || 'Search...'}
-              className="focus:border-primary border-border bg-card text-primary-text focus:ring-primary/20 w-full rounded-md border py-2.5 pr-4 pl-10 text-sm outline-none focus:ring-2 sm:w-64"
+              className="focus:border-primary border-border bg-card text-primary-text focus:ring-primary/20 w-full rounded-md border py-2.5 pr-4 pl-10 text-sm outline-none focus:ring-2 sm:w-80 md:w-96"
             />
             {searchInputValue && (
               <button

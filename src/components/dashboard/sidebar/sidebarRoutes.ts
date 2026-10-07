@@ -37,11 +37,7 @@ export const AdminRoutes = [
     url: '/dashboard/jobs',
     icon: BriefcaseBusiness,
   },
-  {
-    title: 'Job Applications',
-    url: '/dashboard/job-applications',
-    icon: FileSpreadsheet,
-  },
+
   {
     title: 'Inquiries / Contacts',
     url: '/dashboard/contacts',

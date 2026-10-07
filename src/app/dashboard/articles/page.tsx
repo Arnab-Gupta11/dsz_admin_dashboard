@@ -21,24 +21,23 @@ export default function ArticlesPage() {
   const page = Number(searchParams.get('page')) || 1;
   const limit = Number(searchParams.get('limit')) || 10;
   const search = searchParams.get('search') || '';
+  const status = searchParams.get('status') || undefined;
 
-  const { data, isLoading, isError } = useGetArticlesQuery({ page, limit, search });
+  const { data, isLoading, isError } = useGetArticlesQuery({ page, limit, search, status });
   const [deleteArticle, { isLoading: isDeleting }] = useDeleteArticleMutation();
   const { openModal, closeModal } = useModal();
 
   const articles = data?.data || [];
   const meta = data?.meta;
 
-  const handleDelete = (id: string) => {
-    openModal({ view: 'DELETE_CONFIRM', data: { 
+  const handleDelete = (id: string, title?: string) => {
+    openModal({ view: 'DELETE_CONFIRM', data: { deleteItem: title, 
       onConfirm: async () => {
         try {
           await deleteArticle(id).unwrap();
           toast.success('Article deleted successfully');
           closeModal();
-        } catch (error) {
-          toast.error('Failed to delete article');
-        }
+        } catch(error: any) { toast.error(error?.data?.message || error?.message || 'Failed to delete article'); }
       },
       isLoading: isDeleting,
      } });
@@ -66,7 +65,7 @@ export default function ArticlesPage() {
     {
       header: 'Actions',
       cell: (row: IArticle) => (
-        <DynamicTableActions actions={[{ type: 'edit', href: `/dashboard/articles/${row._id}/edit` }, { type: 'delete', onClick: () => handleDelete(row._id) }]} />
+        <DynamicTableActions actions={[{ type: 'edit', href: `/dashboard/articles/${row._id}/edit` }, { type: 'delete', onClick: () => handleDelete(row._id, row.title) }]} />
       ),
     },
   ];
@@ -84,7 +83,24 @@ export default function ArticlesPage() {
       </div>
 
       <div className="border-border bg-card rounded-md border shadow-sm">
-        <DynamicTableFilterBar fields={[{ name: 'search', type: 'search', placeholder: 'Search articles...' }]} />
+        <div className="p-4 border-b border-border">
+          <DynamicTableFilterBar
+            fields={[
+              { name: "search", type: "search", placeholder: "Search by Title or Excerpt..." },
+              {
+                name: "status",
+                type: "select",
+                placeholder: "Filter by Status",
+                options: [
+                  { label: "All Statuses", value: "all" },
+                  { label: "Draft", value: "DRAFT" },
+                  { label: "Published", value: "PUBLISHED" },
+                  { label: "Archived", value: "ARCHIVED" },
+                ],
+              },
+            ]}
+          />
+        </div>
         
         {isLoading ? (
           <div className="p-4"><TableSkeleton rowCount={5} columnCount={5} /></div>

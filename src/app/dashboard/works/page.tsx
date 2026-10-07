@@ -21,24 +21,23 @@ export default function WorksPage() {
   const page = Number(searchParams.get('page')) || 1;
   const limit = Number(searchParams.get('limit')) || 10;
   const search = searchParams.get('search') || '';
+  const status = searchParams.get('status') || undefined;
 
-  const { data, isLoading, isError } = useGetWorksQuery({ page, limit, search });
+  const { data, isLoading, isError } = useGetWorksQuery({ page, limit, search, status });
   const [deleteWork, { isLoading: isDeleting }] = useDeleteWorkMutation();
   const { openModal, closeModal } = useModal();
 
   const works = data?.data || [];
   const meta = data?.meta;
 
-  const handleDelete = (id: string) => {
-    openModal({ view: 'DELETE_CONFIRM', data: { 
+  const handleDelete = (id: string, title?: string) => {
+    openModal({ view: 'DELETE_CONFIRM', data: { deleteItem: title, 
       onConfirm: async () => {
         try {
           await deleteWork(id).unwrap();
           toast.success('Work deleted successfully');
           closeModal();
-        } catch (error) {
-          toast.error('Failed to delete work');
-        }
+        } catch(error: any) { toast.error(error?.data?.message || error?.message || 'Failed to delete work'); }
       },
       isLoading: isDeleting,
      } });
@@ -68,7 +67,7 @@ export default function WorksPage() {
     {
       header: 'Actions',
       cell: (row: IWork) => (
-        <DynamicTableActions actions={[{ type: 'edit', href: `/dashboard/works/${row._id}/edit` }, { type: 'delete', onClick: () => handleDelete(row._id) }]} />
+        <DynamicTableActions actions={[{ type: 'edit', href: `/dashboard/works/${row._id}/edit` }, { type: 'delete', onClick: () => handleDelete(row._id, row.title) }]} />
       ),
     },
   ];
@@ -86,7 +85,24 @@ export default function WorksPage() {
       </div>
 
       <div className="border-border bg-card rounded-md border shadow-sm">
-        <DynamicTableFilterBar fields={[{ name: 'search', type: 'search', placeholder: 'Search works...' }]} />
+        <div className="p-4 border-b border-border">
+          <DynamicTableFilterBar
+            fields={[
+              { name: "search", type: "search", placeholder: "Search by Title, Client, or Industry..." },
+              {
+                name: "status",
+                type: "select",
+                placeholder: "Filter by Status",
+                options: [
+                  { label: "All Statuses", value: "all" },
+                  { label: "Draft", value: "DRAFT" },
+                  { label: "Published", value: "PUBLISHED" },
+                  { label: "Archived", value: "ARCHIVED" },
+                ],
+              },
+            ]}
+          />
+        </div>
         
         {isLoading ? (
           <div className="p-4"><TableSkeleton rowCount={5} columnCount={5} /></div>

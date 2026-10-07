@@ -27,16 +27,14 @@ export default function Page() {
   const items = data?.data || [];
   const meta = data?.meta;
 
-  const handleDelete = (id: string) => {
-    openModal({ view: 'DELETE_CONFIRM', data: { 
+  const handleDelete = (id: string, name?: string) => {
+    openModal({ view: 'DELETE_CONFIRM', data: { deleteItem: name, 
       onConfirm: async () => {
         try {
           await deleteItem(id).unwrap();
           toast.success('Deleted successfully');
           closeModal();
-        } catch (error) {
-          toast.error('Failed to delete');
-        }
+        } catch(error: any) { toast.error(error?.data?.message || error?.message || 'Failed to delete'); }
       },
       isLoading: isDeleting,
      } });
@@ -52,7 +50,7 @@ export default function Page() {
     },
     {
       header: 'Actions',
-      cell: (row: any) => <DynamicTableActions actions={[{ type: 'edit', href: `/dashboard/testimonials/${row._id}/edit` }, { type: 'delete', onClick: () => handleDelete(row._id) }]} />
+      cell: (row: any) => <DynamicTableActions actions={[{ type: 'edit', href: `/dashboard/testimonials/${row._id}/edit` }, { type: 'delete', onClick: () => handleDelete(row._id, row.name) }]} />
     }
 
   ];

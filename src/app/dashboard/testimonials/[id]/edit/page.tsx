@@ -22,7 +22,7 @@ export default function Edit() {
           await update({ id: id as string, data: formData }).unwrap();
           toast.success('Updated successfully');
           router.push('/dashboard/testimonials');
-        } catch(e) { toast.error('Failed to update'); }
+        } catch(e: any) { toast.error(e?.data?.message || e?.message || 'Failed to update'); }
       }} isLoading={isLoading} />
     </div>
   );

@@ -19,23 +19,24 @@ export default function Page() {
   const page = Number(searchParams.get('page')) || 1;
   const limit = Number(searchParams.get('limit')) || 10;
   const search = searchParams.get('search') || '';
+  const status = searchParams.get('status') || undefined;
 
-  const { data, isLoading, isError } = useGetJobsQuery({ page, limit, search });
+  const { data, isLoading, isError } = useGetJobsQuery({ page, limit, search, status });
   const [deleteItem, { isLoading: isDeleting }] = useDeleteJobMutation();
   const { openModal, closeModal } = useModal();
 
   const items = data?.data || [];
   const meta = data?.meta;
 
-  const handleDelete = (id: string) => {
-    openModal({ view: 'DELETE_CONFIRM', data: { 
+  const handleDelete = (id: string, title?: string) => {
+    openModal({ view: 'DELETE_CONFIRM', data: { deleteItem: title, 
       onConfirm: async () => {
         try {
           await deleteItem(id).unwrap();
           toast.success('Deleted successfully');
           closeModal();
-        } catch (error) {
-          toast.error('Failed to delete');
+        } catch (error: any) {
+          toast.error(error?.data?.message || error?.message || 'Failed to delete');
         }
       },
       isLoading: isDeleting,
@@ -53,7 +54,15 @@ export default function Page() {
     },
     {
       header: 'Actions',
-      cell: (row: any) => <DynamicTableActions actions={[{ type: 'edit', href: `/dashboard/jobs/${row._id}/edit` }, { type: 'delete', onClick: () => handleDelete(row._id) }]} />
+      cell: (row: any) => (
+        <DynamicTableActions
+          actions={[
+            { type: 'view', href: `/dashboard/jobs/${row._id}/applications`, label: 'Applicants' },
+            { type: 'edit', href: `/dashboard/jobs/${row._id}/edit` },
+            { type: 'delete', onClick: () => handleDelete(row._id, row.title) }
+          ]}
+        />
+      )
     }
 
   ];
@@ -72,7 +81,24 @@ export default function Page() {
       </div>
 
       <div className="border-border bg-card rounded-md border shadow-sm">
-        <DynamicTableFilterBar fields={[{ name: 'search', type: 'search', placeholder: 'Search...' }]} />
+        <div className="p-4 border-b border-border">
+          <DynamicTableFilterBar
+            fields={[
+              { name: "search", type: "search", placeholder: "Search by Title, Department, or Type..." },
+              {
+                name: "status",
+                type: "select",
+                placeholder: "Filter by Status",
+                options: [
+                  { label: "All Statuses", value: "all" },
+                  { label: "Draft", value: "DRAFT" },
+                  { label: "Published", value: "PUBLISHED" },
+                  { label: "Archived", value: "ARCHIVED" },
+                ],
+              },
+            ]}
+          />
+        </div>
         
         {isLoading ? (
           <div className="p-8 text-center text-sm text-secondary-text">Loading...</div>

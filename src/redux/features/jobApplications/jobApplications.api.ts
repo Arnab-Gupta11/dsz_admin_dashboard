@@ -24,7 +24,7 @@ export const jobApplicationsApi = apiClient.injectEndpoints({
     }),
     updateJobApplication: builder.mutation<{ data: IJobApplication }, { id: string; data: Partial<IJobApplication> }>({
       query: ({ id, data }) => ({
-        url: `/admin/job-applications/${id}`,
+        url: `/admin/job-applications/${id}/status`,
         method: "PATCH",
         body: data,
       }),

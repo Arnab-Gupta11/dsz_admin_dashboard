@@ -35,7 +35,7 @@ const DynamicBackButton = ({ label = 'Back', href, className }: DynamicBackButto
   }
 
   return (
-    <button onClick={() => router.back()} className={combinedClasses}>
+    <button type="button" onClick={() => router.back()} className={combinedClasses}>
       {content}
     </button>
   );
