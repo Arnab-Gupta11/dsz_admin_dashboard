@@ -50,4 +50,4 @@ export const {
   useCreateJobApplicationMutation,
   useUpdateJobApplicationMutation,
   useDeleteJobApplicationMutation,
-} = jobApplicationsApi;
+} = jobApplicationsApi as any;

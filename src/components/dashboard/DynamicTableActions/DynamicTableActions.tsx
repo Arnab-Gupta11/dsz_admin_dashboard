@@ -8,6 +8,7 @@ import {
   MessageCircle,
   Pencil,
   Trash2,
+  Mail,
   X,
   CheckCircle,
 } from 'lucide-react';
@@ -31,7 +32,7 @@ import Link from 'next/link';
  */
 
 export type ActionType =
-  'edit' | 'delete' | 'view' | 'save' | 'close' | 'suspend' | 'message' | 'activate' | 'deactivate';
+  'edit' | 'delete' | 'view' | 'save' | 'close' | 'suspend' | 'message' | 'activate' | 'deactivate' | 'email';
 
 interface ActionItem {
   type: ActionType;
@@ -56,6 +57,7 @@ const DynamicTableActions = ({ actions }: DynamicTableActionsProps) => {
     },
     delete: {
       icon: Trash2,
+  Mail,
       defaultLabel: 'Delete',
       color: '#dc3545',
     },
@@ -93,6 +95,11 @@ const DynamicTableActions = ({ actions }: DynamicTableActionsProps) => {
       icon: Ban,
       defaultLabel: 'Deactivate',
       color: '#ff8a4c',
+    },
+    email: {
+      icon: Mail,
+      defaultLabel: 'Email',
+      color: '#3b82f6',
     },
   };
 

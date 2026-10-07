@@ -141,7 +141,7 @@ export default function JobApplicationDetails() {
                 </h2>
                 <p className="text-primary font-medium mt-1">
                   Applying for:{" "}
-                  {(application.jobId as any)?.title || "Unknown Job"}
+                  {(application.jobId as unknown as any)?.title || "Unknown Job"}
                 </p>
               </div>
               <DynamicBadge text={application.status} color="#34796f" />

@@ -84,7 +84,7 @@ const DynamicTableFilterBarContent = ({ fields }: DynamicTableFilterBarProps) =>
             return (
               <div key={field.name} className="w-full sm:w-44">
                 <Select
-                  value={currentFieldValue}
+                  value={currentFieldValue === 'all' ? '' : currentFieldValue}
                   onValueChange={(val) => {
                     setMultipleQueries({ [paramName]: val === 'all' ? undefined : val, page: 1 });
                     if (field.onChange) field.onChange(val);
