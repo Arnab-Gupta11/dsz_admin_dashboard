@@ -60,7 +60,8 @@ export default function Page() {
 
   const columns = [
     { header: "Name", accessor: "name" as any },
-    { header: "Contact", accessor: "contact" as any },
+    { header: "Email", accessor: "email" as any },
+    { header: "Phone", accessor: "phone" as any },
     { header: "Need", accessor: "need" as any },
     {
       header: "Status",
@@ -80,7 +81,7 @@ export default function Page() {
             {
               type: "email",
               onClick: () => {
-                window.location.href = `mailto:${row.contact}`;
+                window.location.href = `mailto:${row.email}`;
               },
             },
             {

@@ -45,7 +45,8 @@ export interface IAdmin {
 export interface IContact {
   _id: string;
   name: string;
-  contact: string;
+  email: string;
+  phone: string;
   need: string;
   message: string;
   status: 'NEW' | 'READ' | 'REPLIED' | 'ARCHIVED';

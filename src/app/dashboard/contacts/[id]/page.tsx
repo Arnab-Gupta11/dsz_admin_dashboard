@@ -97,7 +97,7 @@ export default function ContactDetails() {
           <Button
             variant="outline"
             className="border-border hover:bg-primary/10 hover:text-primary text-primary"
-            onClick={() => (window.location.href = `mailto:${contact.contact}`)}
+            onClick={() => (window.location.href = `mailto:${contact.email}`)}
           >
             <Mail className="mr-2 h-4 w-4" /> Email
           </Button>
@@ -128,22 +128,19 @@ export default function ContactDetails() {
             </div>
 
             <div className="mt-8 grid gap-4 sm:grid-cols-2">
-              <div className="flex items-center gap-3 text-secondary-text">
-                {contact.contact.includes('@') ? (
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center gap-3 text-secondary-text">
                   <Mail className="h-4 w-4 text-primary" />
-                ) : (
+                  <a href={`mailto:${contact.email}`} className="hover:text-primary transition-colors">
+                    {contact.email}
+                  </a>
+                </div>
+                <div className="flex items-center gap-3 text-secondary-text">
                   <Phone className="h-4 w-4 text-primary" />
-                )}
-                <a
-                  href={
-                    contact.contact.includes('@')
-                      ? `mailto:${contact.contact}`
-                      : `tel:${contact.contact}`
-                  }
-                  className="hover:text-primary transition-colors"
-                >
-                  {contact.contact}
-                </a>
+                  <a href={`tel:${contact.phone}`} className="hover:text-primary transition-colors">
+                    {contact.phone}
+                  </a>
+                </div>
               </div>
               <div className="flex items-center gap-3 text-secondary-text">
                 <CalendarDays className="h-4 w-4 text-primary" />
