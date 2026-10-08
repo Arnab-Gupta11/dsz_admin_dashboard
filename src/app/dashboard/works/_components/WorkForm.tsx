@@ -46,7 +46,10 @@ const workSchema = z.object({
 
   results: z.array(resultSchema).min(1, "Add at least one result"),
   heroImages: z.array(imageSchema).min(1, "Add at least one hero image"),
-  gallery: z.array(imageSchema),
+  gallery: z
+    .array(imageSchema)
+    .min(1, "At least 1 gallery image is required")
+    .max(2, "At most 2 gallery images are allowed"),
 });
 
 type WorkFormValues = z.infer<typeof workSchema>;
@@ -85,7 +88,9 @@ export default function WorkForm({ initialData, onSubmit, isLoading }: any) {
       heroImages: initialData?.heroImages?.length
         ? initialData.heroImages
         : [{ src: "", alt: "" }],
-      gallery: initialData?.gallery?.length ? initialData.gallery : [],
+      gallery: initialData?.gallery?.length 
+        ? initialData.gallery 
+        : [{ src: "", alt: "" }],
     },
   });
 
@@ -447,16 +452,18 @@ export default function WorkForm({ initialData, onSubmit, isLoading }: any) {
               Gallery Images
             </h2>
             <p className="text-xs text-secondary-text">
-              Optional additional images used throughout the case study content.
+              Add minimum 1 and maximum 2 images for the case study gallery.
             </p>
           </div>
-          <button
-            type="button"
-            onClick={() => addGallery({ src: "", alt: "" })}
-            className="flex items-center gap-1 text-sm text-primary hover:text-primary/80"
-          >
-            <Plus size={16} /> Add Image
-          </button>
+          {galleryFields.length < 2 && (
+            <button
+              type="button"
+              onClick={() => addGallery({ src: "", alt: "" })}
+              className="flex items-center gap-1 text-sm text-primary hover:text-primary/80"
+            >
+              <Plus size={16} /> Add Image
+            </button>
+          )}
         </div>
         {galleryFields.map((field, index) => (
           <div
@@ -499,6 +506,11 @@ export default function WorkForm({ initialData, onSubmit, isLoading }: any) {
             </div>
           </div>
         ))}
+        {errors.gallery && (
+          <span className="text-danger text-xs">
+            {errors.gallery.message}
+          </span>
+        )}
       </div>
 
       <div className="flex items-center gap-4 border-t border-border pt-6">
@@ -508,7 +520,7 @@ export default function WorkForm({ initialData, onSubmit, isLoading }: any) {
           icon={Save}
           label="Save Work"
           isLoading={isLoading}
-          disabled={!isValid || isLoading}
+          disabled={isLoading}
         />
       </div>
     </form>
