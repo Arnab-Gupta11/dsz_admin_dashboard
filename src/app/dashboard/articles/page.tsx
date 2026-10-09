@@ -12,7 +12,9 @@ import { useModal } from "@/context/ModalContext";
 import {
   useGetArticlesQuery,
   useDeleteArticleMutation,
+  useUpdateArticleMutation,
 } from "@/redux/features/articles/articles.api";
+import { useGetServicesQuery } from "@/redux/features/services/services.api";
 import { IArticle } from "@/types/models.types";
 import { Plus } from "lucide-react";
 import Link from "next/link";
@@ -25,14 +27,19 @@ export default function ArticlesPage() {
   const limit = Number(searchParams.get("limit")) || 10;
   const search = searchParams.get("search") || "";
   const status = searchParams.get("status") || undefined;
+  const category = searchParams.get("category") || undefined;
+  const isFeatured = searchParams.get("isFeatured") || undefined;
 
   const { data, isLoading, isError } = useGetArticlesQuery({
     page,
     limit,
     search,
     status,
+    category,
+    isFeatured,
   });
   const [deleteArticle, { isLoading: isDeleting }] = useDeleteArticleMutation();
+  const { data: servicesData } = useGetServicesQuery({ limit: 100 });
   const { openModal, closeModal } = useModal();
 
   const articles = data?.data || [];
@@ -61,6 +68,17 @@ export default function ArticlesPage() {
     });
   };
 
+  const [updateArticle] = useUpdateArticleMutation();
+
+  const handleToggleFeatured = async (id: string, currentStatus: boolean) => {
+    try {
+      await updateArticle({ id, data: { isFeatured: !currentStatus } }).unwrap();
+      toast.success(`Article ${!currentStatus ? "featured" : "unfeatured"}`);
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Failed to update featured status");
+    }
+  };
+
   const columns = [
     {
       header: "Title",
@@ -75,6 +93,24 @@ export default function ArticlesPage() {
     {
       header: "Author",
       accessor: "author" as keyof IArticle,
+    },
+    {
+      header: "Featured",
+      cell: (row: any) => (
+        <button
+          type="button"
+          onClick={() => handleToggleFeatured(row._id, !!row.isFeatured)}
+          className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full transition-colors ${
+            row.isFeatured ? "bg-primary" : "bg-border"
+          }`}
+        >
+          <span
+            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+              row.isFeatured ? "translate-x-4" : "translate-x-0.5"
+            }`}
+          />
+        </button>
+      ),
     },
     {
       header: "Status",
@@ -129,6 +165,27 @@ export default function ArticlesPage() {
                   { label: "Draft", value: "DRAFT" },
                   { label: "Published", value: "PUBLISHED" },
                   { label: "Archived", value: "ARCHIVED" },
+                ],
+              },
+              {
+                name: "isFeatured",
+                type: "select",
+                placeholder: "Featured",
+                options: [
+                  { label: "All Articles", value: "all" },
+                  { label: "Featured Only", value: "true" },
+                ],
+              },
+              {
+                name: "category",
+                type: "select",
+                placeholder: "Filter by Service",
+                options: [
+                  { label: "All Services", value: "all" },
+                  ...(servicesData?.data || []).map((s) => ({
+                    label: s.title,
+                    value: s._id,
+                  })),
                 ],
               },
             ]}

@@ -24,12 +24,14 @@ export default function Page() {
   const limit = Number(searchParams.get("limit")) || 10;
   const search = searchParams.get("search") || "";
   const status = searchParams.get("status") || undefined;
+  const department = searchParams.get("department") || undefined;
 
   const { data, isLoading, isError } = useGetJobsQuery({
     page,
     limit,
     search,
     status,
+    department,
   });
   const [deleteItem, { isLoading: isDeleting }] = useDeleteJobMutation();
   const { openModal, closeModal } = useModal();
@@ -121,6 +123,19 @@ export default function Page() {
                   { label: "Draft", value: "DRAFT" },
                   { label: "Published", value: "PUBLISHED" },
                   { label: "Archived", value: "ARCHIVED" },
+                ],
+              },
+              {
+                name: "department",
+                type: "select",
+                placeholder: "Filter by Department",
+                options: [
+                  { label: "All Departments", value: "all" },
+                  { label: "Development", value: "Development" },
+                  { label: "Design", value: "Design" },
+                  { label: "Marketing", value: "Marketing" },
+                  { label: "Video", value: "Video" },
+                  { label: "Operations", value: "Operations" },
                 ],
               },
             ]}

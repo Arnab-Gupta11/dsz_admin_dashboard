@@ -135,7 +135,8 @@ export interface IService {
   image: string;
   imageAlt?: string;
   imagePublicId?: string;
-    status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
+  status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
+  isFeatured?: boolean;
   order: number;
   seo: { metaTitle?: string; metaDescription?: string; noIndex: boolean; };
   createdAt: Date | string;

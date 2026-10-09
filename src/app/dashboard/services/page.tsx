@@ -12,6 +12,7 @@ import { useModal } from "@/context/ModalContext";
 import {
   useGetServicesQuery,
   useDeleteServiceMutation,
+  useUpdateServiceMutation,
 } from "@/redux/features/services/services.api";
 import { Plus } from "lucide-react";
 import Link from "next/link";
@@ -24,12 +25,14 @@ export default function Page() {
   const limit = Number(searchParams.get("limit")) || 10;
   const search = searchParams.get("search") || "";
   const status = searchParams.get("status") || undefined;
+  const isFeatured = searchParams.get("isFeatured") || undefined;
 
   const { data, isLoading, isError } = useGetServicesQuery({
     page,
     limit,
     search,
     status,
+    isFeatured,
   });
   const [deleteItem, { isLoading: isDeleting }] = useDeleteServiceMutation();
   const { openModal, closeModal } = useModal();
@@ -59,9 +62,38 @@ export default function Page() {
     });
   };
 
+  const [updateService] = useUpdateServiceMutation();
+
+  const handleToggleFeatured = async (id: string, currentStatus: boolean) => {
+    try {
+      await updateService({ id, data: { isFeatured: !currentStatus } }).unwrap();
+      toast.success(`Service ${!currentStatus ? "featured" : "unfeatured"}`);
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Failed to update featured status");
+    }
+  };
+
   const columns = [
     { header: "Title", accessor: "title" as any },
     { header: "Tag", accessor: "tag" as any },
+    {
+      header: "Featured",
+      cell: (row: any) => (
+        <button
+          type="button"
+          onClick={() => handleToggleFeatured(row._id, !!row.isFeatured)}
+          className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full transition-colors ${
+            row.isFeatured ? "bg-primary" : "bg-border"
+          }`}
+        >
+          <span
+            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+              row.isFeatured ? "translate-x-4" : "translate-x-0.5"
+            }`}
+          />
+        </button>
+      ),
+    },
     {
       header: "Status",
       cell: (row: any) => (
@@ -114,6 +146,15 @@ export default function Page() {
                   { label: "Published", value: "PUBLISHED" },
                   { label: "Draft", value: "DRAFT" },
                   { label: "Archived", value: "ARCHIVED" },
+                ],
+              },
+              {
+                name: "isFeatured",
+                type: "select",
+                placeholder: "Featured",
+                options: [
+                  { label: "All Services", value: "all" },
+                  { label: "Featured Only", value: "true" },
                 ],
               },
             ]}
