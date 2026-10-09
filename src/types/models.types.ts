@@ -8,7 +8,7 @@ export interface IArticle {
   _id: string;
   slug: string;
   title: string;
-  category: 'Marketing Tips' | 'AI Tools' | 'Case Studies' | 'DSZ News';
+  category: string | any;
   excerpt: string;
   image: string;
   imageAlt: string;

@@ -13,9 +13,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Save } from 'lucide-react';
 
+import { useGetServicesQuery } from '@/redux/features/services/services.api';
+
 const articleSchema = z.object({
   title: z.string().min(1, 'Title is required'),
-  category: z.enum(['Marketing Tips', 'AI Tools', 'Case Studies', 'DSZ News']),
+  category: z.string().min(1, 'Category is required'),
   excerpt: z.string().min(1, 'Excerpt is required'),
   image: z.string().min(1, 'Image is required'),
   imageAlt: z.string().min(1, 'Image Alt is required'),
@@ -34,11 +36,19 @@ interface Props {
 }
 
 export default function ArticleForm({ initialData, onSubmit, isLoading }: Props) {
+  const { data: servicesData, isLoading: isLoadingServices } = useGetServicesQuery({ limit: 100 });
+  const services = servicesData?.data || [];
+  
+  const categoryOptions = services.map((s: any) => ({
+    value: s._id,
+    label: s.title
+  }));
+
   const { control, handleSubmit, formState: { errors } } = useForm<FormValues>({
     resolver: zodResolver(articleSchema),
     defaultValues: {
       title: initialData?.title || '',
-      category: initialData?.category || 'Marketing Tips',
+      category: initialData?.category?._id || initialData?.category || '',
       excerpt: initialData?.excerpt || '',
       image: initialData?.image || '',
       imageAlt: initialData?.imageAlt || '',
@@ -93,17 +103,16 @@ export default function ArticleForm({ initialData, onSubmit, isLoading }: Props)
                 { value: 'ARCHIVED', label: 'Archived' },
               ]}
             />
-            <SelectField
-              label="Category"
-              name="category"
-              control={control}
-              options={[
-                { value: 'Marketing Tips', label: 'Marketing Tips' },
-                { value: 'AI Tools', label: 'AI Tools' },
-                { value: 'Case Studies', label: 'Case Studies' },
-                { value: 'DSZ News', label: 'DSZ News' },
-              ]}
-            />
+            {isLoadingServices ? (
+              <div className="text-sm text-secondary-text">Loading categories...</div>
+            ) : (
+              <SelectField
+                label="Category (Service)"
+                name="category"
+                control={control}
+                options={categoryOptions.length > 0 ? categoryOptions : [{ value: '', label: 'No services found' }]}
+              />
+            )}
             <InputField label="Author" name="author" control={control} error={errors.author?.message} required />
             <InputField label="Read Time" name="readTime" control={control} error={errors.readTime?.message} required />
           </div>

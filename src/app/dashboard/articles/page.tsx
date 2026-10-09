@@ -68,7 +68,9 @@ export default function ArticlesPage() {
     },
     {
       header: "Category",
-      accessor: "category" as keyof IArticle,
+      cell: (row: IArticle) => (
+        <span>{typeof row.category === 'object' && row.category !== null ? row.category.title : row.category}</span>
+      )
     },
     {
       header: "Author",
