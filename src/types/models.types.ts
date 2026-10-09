@@ -17,6 +17,7 @@ export interface IArticle {
   body: ArticleBlock[];
   readTime: string;
   status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
+  isFeatured?: boolean;
   order: number;
   seo: {
     metaTitle?: string;
@@ -196,6 +197,7 @@ export interface IWork {
   results: IProjectResult[];
   gallery: IProjectImage[];
   status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
+  isFeatured?: boolean;
   order: number;
   seo: {
     metaTitle?: string;
