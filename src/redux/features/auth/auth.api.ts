@@ -24,8 +24,24 @@ export const authApi = apiClient.injectEndpoints({
         method: "POST",
       }),
     }),
+
+    updateProfile: builder.mutation({
+      query: (data) => ({
+        url: "/auth/update-profile",
+        method: "PATCH",
+        body: data,
+      }),
+    }),
+
+    changePassword: builder.mutation({
+      query: (data) => ({
+        url: "/auth/change-password",
+        method: "PATCH",
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation, useRegisterMutation, useLogoutMutation } =
+export const { useLoginMutation, useRegisterMutation, useLogoutMutation, useUpdateProfileMutation, useChangePasswordMutation } =
   authApi;

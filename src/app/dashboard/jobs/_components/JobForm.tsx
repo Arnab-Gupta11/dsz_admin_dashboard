@@ -15,7 +15,7 @@ import { IJob } from '@/types/models.types';
 
 const jobSchema = z.object({
   title: z.string().min(1, 'Title is required'),
-  department: z.enum(['Development', 'Design', 'Marketing', 'Video', 'Operations']),
+  openings: z.coerce.number().min(1, 'At least 1 opening is required'),
   type: z.enum(['Full-time', 'Part-time', 'Internship', 'Contract']),
   location: z.enum(['On-site', 'Remote', 'Hybrid']),
   city: z.string().min(1, 'City is required'),
@@ -49,7 +49,7 @@ export default function JobForm({ initialData, onSubmit, isLoading }: Props) {
     resolver: zodResolver(jobSchema),
     defaultValues: {
       title: initialData?.title || '',
-      department: initialData?.department || 'Development',
+      openings: initialData?.openings || 1,
       type: initialData?.type || 'Full-time',
       location: initialData?.location || 'On-site',
       city: initialData?.city || 'Chittagong',
@@ -111,18 +111,7 @@ export default function JobForm({ initialData, onSubmit, isLoading }: Props) {
                 { value: 'ARCHIVED', label: 'Archived' },
               ]}
             />
-            <SelectField
-              label="Department"
-              name="department"
-              control={control}
-              options={[
-                { value: 'Development', label: 'Development' },
-                { value: 'Design', label: 'Design' },
-                { value: 'Marketing', label: 'Marketing' },
-                { value: 'Video', label: 'Video' },
-                { value: 'Operations', label: 'Operations' },
-              ]}
-            />
+            <InputField label="Number of Openings" name="openings" control={control} error={errors.openings?.message} required type="number" />
             <SelectField
               label="Employment Type"
               name="type"
