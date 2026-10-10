@@ -18,14 +18,20 @@ export default function VerifyOtpPage() {
   const router = useRouter();
   const isLoading = false;
 
-  const { control, handleSubmit, setValue, formState: { errors } } = useForm({
+  const { control, handleSubmit, setValue, getValues, formState: { errors } } = useForm({
     resolver: zodResolver(verifyOtpSchema),
     defaultValues: { otp: '' },
   });
 
   const onSubmit = async () => {
-    toast.success('OTP Verified! (Mocked)');
-    router.push('/reset-password');
+    const searchParams = new URLSearchParams(window.location.search);
+    const email = searchParams.get('email');
+    if (!email) {
+      toast.error('Email not found. Please start over.');
+      return;
+    }
+    const otp = getValues('otp');
+    router.push(`/reset-password?email=${encodeURIComponent(email)}&otp=${encodeURIComponent(otp)}`);
   };
 
   return (

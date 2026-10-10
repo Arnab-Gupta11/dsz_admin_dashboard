@@ -1,5 +1,7 @@
 'use client';
 
+import { useForgetPasswordMutation } from '@/redux/features/auth/auth.api';
+
 import DynamicActionButton from '@/components/dashboard/DynamicActionButton/DynamicActionButton';
 import InputField from '@/components/dashboard/Fields/InputField/InputField';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -18,7 +20,7 @@ type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>;
 
 export default function ForgotPasswordPage() {
   const router = useRouter();
-  const isLoading = false;
+  const [forgetPassword, { isLoading }] = useForgetPasswordMutation();
 
   const {
     control,
@@ -30,8 +32,13 @@ export default function ForgotPasswordPage() {
   });
 
   const onSubmit = async (data: ForgotPasswordFormValues) => {
-    toast.success('Reset link sent! (Mocked)');
-    router.push('/verify-otp');
+    try {
+      await forgetPassword({ email: data.email }).unwrap();
+      toast.success('Reset link sent to your email!');
+      router.push(`/verify-otp?email=${encodeURIComponent(data.email)}`);
+    } catch (e: any) {
+      toast.error(e?.data?.message || e?.message || 'Failed to send reset code');
+    }
   };
 
   return (
