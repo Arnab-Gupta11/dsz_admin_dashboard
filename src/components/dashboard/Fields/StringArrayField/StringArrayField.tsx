@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils';
 interface StringArrayFieldProps<T extends FieldValues> {
   label: string;
   name: Path<T>;
-  control: Control<T>;
+  control: any;
   error?: string;
   placeholder?: string;
   required?: boolean;

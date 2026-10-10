@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import CustomPagination from "@/components/dashboard/CustomPagination/CustomPagination";
 import TableSkeleton from "@/components/Loader/Skeletons/TableSkeleton";
 import CustomTable from "@/components/dashboard/CustomTable/CustomTable";
@@ -20,7 +21,7 @@ import CreateAdminDialog from "./components/CreateAdminDialog";
 import { useCurrentUserRole } from "@/hooks/useCurrentUserRole";
 import { ShieldAlert } from "lucide-react";
 
-export default function AdminsPage() {
+function AdminsContent() {
   const searchParams = useSearchParams();
   const page = Number(searchParams.get("page")) || 1;
   const limit = Number(searchParams.get("limit")) || 10;
@@ -177,16 +178,6 @@ export default function AdminsPage() {
                 type: "search",
                 placeholder: "Search by name or email...",
               },
-              // {
-              //   name: "role",
-              //   type: "select",
-              //   placeholder: "Filter by Role",
-              //   options: [
-              //     { label: "All Roles", value: "all" },
-              //     { label: "Admin", value: "ADMIN" },
-              //     { label: "Super Admin", value: "SUPER_ADMIN" },
-              //   ],
-              // },
             ]}
           />
         </div>
@@ -219,5 +210,13 @@ export default function AdminsPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function AdminsPage() {
+  return (
+    <Suspense fallback={<div className="p-4"><TableSkeleton rowCount={5} columnCount={5} /></div>}>
+      <AdminsContent />
+    </Suspense>
   );
 }

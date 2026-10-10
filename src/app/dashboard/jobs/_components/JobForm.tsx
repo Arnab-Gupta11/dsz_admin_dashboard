@@ -46,7 +46,7 @@ export default function JobForm({ initialData, onSubmit, isLoading }: Props) {
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>({
-    resolver: zodResolver(jobSchema),
+    resolver: zodResolver(jobSchema) as any,
     defaultValues: {
       title: initialData?.title || '',
       openings: initialData?.openings || 1,

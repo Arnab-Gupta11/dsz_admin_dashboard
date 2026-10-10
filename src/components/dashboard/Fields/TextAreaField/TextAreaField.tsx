@@ -10,7 +10,7 @@ interface TextAreaFieldProps<T extends FieldValues> {
   name: Path<T>;
   placeholder?: string;
   error?: any;
-  control: Control<T>;
+  control: any;
   required?: boolean;
   readOnly?: boolean;
   rows?: number;

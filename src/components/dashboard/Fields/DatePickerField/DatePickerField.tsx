@@ -11,7 +11,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 interface DatePickerFieldProps<T extends FieldValues> {
   label: string;
   name: Path<T>;
-  control: Control<T>;
+  control: any;
   error?: any;
   required?: boolean;
 }

@@ -15,7 +15,7 @@ interface SelectFieldProps<T extends FieldValues> {
   name: Path<T>;
   options: { value: string; label: string }[];
   error?: string;
-  control: Control<T>;
+  control: any;
   required?: boolean;
   placeholder?: string;
   maxHeight?: string;
