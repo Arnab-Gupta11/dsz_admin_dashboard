@@ -54,7 +54,7 @@ const baseQueryWithReauth: BaseQueryFn<
       // লগআউট করে লগইন পেজে রিডাইরেক্ট করে দিচ্ছি!
       api.dispatch(logout());
       if (typeof window !== "undefined") {
-        window.location.href = "/login";
+        window.location.href = "/";
       }
       api.dispatch(setSessionExpired(true));
     }
