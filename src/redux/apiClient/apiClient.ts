@@ -8,7 +8,7 @@ import { logout, setSessionExpired } from "../features/auth/authSlice";
 
 // ১. নরমাল Base Query (যেটি কুকি সহ রিকোয়েস্ট পাঠাবে)
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:5000/api/v1",
+  baseUrl: process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1",
   credentials: "include", // সব রিকোয়েস্টের সাথে ব্রাউজার কুকি পাঠাবে
 });
 
